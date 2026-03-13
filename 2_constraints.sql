@@ -15,22 +15,6 @@ ADD CONSTRAINT check_membership_fee_positive
 CHECK (membership_fee >= 0);
 
 ALTER TABLE MEMBER
-ADD CONSTRAINT check_medical_cert_date_not_future
-CHECK (medical_cert_date <= CURRENT_DATE OR medical_cert_date IS NULL);
-
-ALTER TABLE MEMBER
-ADD CONSTRAINT check_minor_guardian
-CHECK (
-    (TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18 AND guardian_name IS NOT NULL AND guardian_name != '')
-    OR 
-    (TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) >= 18)
-);
-
-ALTER TABLE MEMBER
-ADD CONSTRAINT check_membership_date_not_future
-CHECK (membership_date <= CURRENT_DATE);
-
-ALTER TABLE MEMBER
 ADD CONSTRAINT check_email_format
 CHECK (
     email IS NULL OR 
@@ -40,10 +24,6 @@ CHECK (
 ALTER TABLE MASTER
 ADD CONSTRAINT check_master_specialization_valid
 CHECK (specialization IN ('Foil', 'Epee', 'Sabre') OR specialization IS NULL);
-
-ALTER TABLE MASTER
-ADD CONSTRAINT check_hire_date_not_future
-CHECK (hire_date <= CURRENT_DATE);
 
 ALTER TABLE EQUIPMENT
 ADD CONSTRAINT check_equipment_condition_valid
@@ -56,10 +36,6 @@ CHECK (equipment_type IN ('Mask', 'Jacket', 'Epee', 'Foil', 'Sabre', 'Uniform', 
 ALTER TABLE EQUIPMENT
 ADD CONSTRAINT check_deposit_amount_positive
 CHECK (deposit_amount >= 0);
-
-ALTER TABLE EQUIPMENT
-ADD CONSTRAINT check_purchase_date_not_future
-CHECK (purchase_date <= CURRENT_DATE);
 
 ALTER TABLE TRAINING_SESSION
 ADD CONSTRAINT check_session_day_valid
