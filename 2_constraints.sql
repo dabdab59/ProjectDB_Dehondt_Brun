@@ -1,5 +1,3 @@
-USE ironmask;
-
 ALTER TABLE MEMBER
 ADD CONSTRAINT check_age_category_valid
 CHECK (age_category IN ('M9', 'M11', 'M13', 'M15', 'M17', 'Senior', 'Veteran'));
@@ -23,9 +21,9 @@ CHECK (medical_cert_date <= CURRENT_DATE OR medical_cert_date IS NULL);
 ALTER TABLE MEMBER
 ADD CONSTRAINT check_minor_guardian
 CHECK (
-    (EXTRACT(YEAR FROM AGE(birth_date)) < 18 AND guardian_name IS NOT NULL AND guardian_name != '')
+    (TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) < 18 AND guardian_name IS NOT NULL AND guardian_name != '')
     OR 
-    (EXTRACT(YEAR FROM AGE(birth_date)) >= 18)
+    (TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) >= 18)
 );
 
 ALTER TABLE MEMBER
@@ -35,11 +33,10 @@ CHECK (membership_date <= CURRENT_DATE);
 ALTER TABLE MEMBER
 ADD CONSTRAINT check_email_format
 CHECK (
-    email IS NULL
+    email IS NULL OR 
+    email REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$'
 );
 
-
--- Constraint 9: Check master specialization is valid
 ALTER TABLE MASTER
 ADD CONSTRAINT check_master_specialization_valid
 CHECK (specialization IN ('Foil', 'Epee', 'Sabre') OR specialization IS NULL);
@@ -50,7 +47,7 @@ CHECK (hire_date <= CURRENT_DATE);
 
 ALTER TABLE EQUIPMENT
 ADD CONSTRAINT check_equipment_condition_valid
-CHECK (equipement_condition IN ('New', 'Good', 'To repair', 'Damaged'));
+CHECK (equipment_condition IN ('New', 'Good', 'To repair', 'Damaged'));
 
 ALTER TABLE EQUIPMENT
 ADD CONSTRAINT check_equipment_type_valid
@@ -93,6 +90,8 @@ CREATE INDEX idx_competition_date ON COMPETITION(competition_date);
 CREATE INDEX idx_member_master ON MEMBER(master_id);
 CREATE INDEX idx_member_training_member ON MEMBER_TRAINING(member_id);
 CREATE INDEX idx_member_training_session ON MEMBER_TRAINING(session_id);
+
+
 
 
 
