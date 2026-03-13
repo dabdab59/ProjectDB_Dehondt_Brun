@@ -77,10 +77,6 @@ ALTER TABLE TRAINING_SESSION
 ADD CONSTRAINT unique_session_room_day_time 
 UNIQUE (session_day, room, start_time);
 
-ALTER TABLE COMPETITION
-ADD CONSTRAINT check_competition_date_not_future
-CHECK (competition_date <= CURRENT_DATE);
-
 CREATE INDEX idx_member_last_name ON MEMBER(last_name);
 CREATE INDEX idx_member_age_category ON MEMBER(age_category);
 CREATE INDEX idx_equipment_member ON EQUIPMENT(member_id);
