@@ -39,41 +39,55 @@ Business Rules for the Ironmask :
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 Data dictionnary obtained from the Ricardo Prompt :
 
-Meaning of the data	Type	Size
-FFE License Number	Text	15
-Member's Last Name	Text	50
-Member's First Name	Text	50
-Date of Birth	Date	10
-Age Category	Text	10
-Full Postal Address	Text	150
-Email Address	Text	80
-Phone Number	Text	15
-Legal Guardian's Name	Text	100
-Medical Certificate Date	Date	10
-Main Weapon Practiced	Text	15
-Role / Function at the club	Text	30
-Level / Ranking	Text	30
-Club Membership Date	Date	10
-Annual Membership Fee Amount	Monetary	5
-Type of FFE License	Text	20
-Social Security Number	Text	15
-Referent Master of Arms ID	Text	15
-Training Session Day	Text	8
-Class Start Time	Time	5
-Class End Time	Time	5
-Room Used	Text	30
-Weapon Taught during the class	Text	15
-Equipment Inventory Number	Text	10
-Equipment Type	Text	30
-Equipment Purchase Date	Date	10
-Deposit Amount Paid	Monetary	5
-Equipment Condition	Text	15
-Date of Next Competition	Date	10
-Competition Result	Text	20
+Meaning of the data	                    Type	Size
+FFE License Number	                    Text	15
+Member's Last Name	                    Text	50
+Member's First Name	                    Text	50
+Date of Birth	                          Date	10
+Age Category	                          Text	10
+Full Postal Address	                    Text	150
+Email Address	                          Text	80
+Phone Number	                          Text	15
+Legal Guardian's Name	                  Text	100
+Medical Certificate Date               	Date	10
+Main Weapon Practiced	                  Text	15
+Role / Function at the club	            Text	30
+Level / Ranking	                        Text	30
+Club Membership Date	                  Date	10
+Type of FFE License	                    Text	20
+Referent Master of Arms ID	            Text	15
+Training Session Day	                  Text	10
+Class Start Time	                      Time	5
+Class End Time	                        Time	5
+Room Used	                              Text	30
+Weapon Taught during the class	        Text	15
+Equipment Inventory Number	            Text	10
+Equipment Type	                        Text	30
+Equipment Purchase Date	                Date	10
+Equipment Condition	                    Text	15
+Date of Next Competition	              Date	10
+Competition Result	                    Text	20
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-For the MCD, check the pdf file, it's an image of the Looping file since .loo is not surpported by Github.
+This is our LDM:
+
+Masters_of_arms = (Referent_Master_of_Arms.id VARCHAR(50), DiplomaNumber INT, Speciality VARCHAR(50));
+Disciplines = (Main_Weapon_Practiced VARCHAR(50), Is_Olympic LOGICAL);
+Competitions = (Competition.id INT, Level_RegionalInternational... VARCHAR(50), Location VARCHAR(50), Date_ DATE, Starting_Time TIME);
+Session = (Session.id INT, Day_OfWeek VARCHAR(50), Start_Time TIME, End_Time TIME, Room VARCHAR(50));
+Rules = (Rules.id INT, Match_Duration INT, Target_Area VARCHAR(50), Number_Of_Points_For_Victory INT);
+Categories = (Categorie_Name VARCHAR(50), Categorie_Code VARCHAR(50), Age_Limit INT, Weapon_Type VARCHAR(50), #Rules.id);
+Members = (FFE_License_Number.id VARCHAR(50), Member_s_Last_Name VARCHAR(50), Member_s_First_Name VARCHAR(50), Date_of_Birth DATE, Medical_Certificate_Date DATE, Is_Referee LOGICAL, #Categorie_Name);
+Equipment = (Equipment.id INT, Is_Electric LOGICAL, Brand VARCHAR(50), Size VARCHAR(50), #FFE_License_Number.id);
+Roles = (Club_council_role.id INT, #FFE_License_Number.id);
+Participate = (#FFE_License_Number.id, #Session.id);
+Leads = (#Referent_Master_of_Arms.id, #Session.id);
+Teach = (#Referent_Master_of_Arms.id, #Main_Weapon_Practiced);
+Learn = (#FFE_License_Number.id, #Main_Weapon_Practiced);
+Have = (#FFE_License_Number.id, #Referent_Master_of_Arms.id);
+Compete = (#FFE_License_Number.id, #Competition.id);
+Belongs_To = (#Categorie_Name, #Competition.id);
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
